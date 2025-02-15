@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import './ContactInput.css'
 import { AddContact } from "../../utils/serverRequests";
 
-export default function ContactInput() {
+export default function ContactInput({ fetchContacts }) {
     const [forenameValue, setForenameValue] = useState("")
     const [surnameValue, setSurnameValue] = useState("")
     const [phoneValue, setPhoneValue] = useState("")
@@ -19,7 +19,9 @@ export default function ContactInput() {
     const [isSurnameNumValue, setIsSurnameNumValue] = useState("")
     const [isPhoneNumValue, setisPhoneNumValue] = useState("")
 
-    function add_contact() {
+    const validRegEx = "^[a-zA-Z-]*$"
+
+    async function add_contact() {
         var contact = {
             forename: forenameValue,
             surname: surnameValue,
@@ -27,7 +29,8 @@ export default function ContactInput() {
             phone_number: Number(phoneValue)
         };
 
-        AddContact(contact);
+        await AddContact(contact);
+        fetchContacts();
 
         setForenameValue("");
         setSurnameValue("");
@@ -49,16 +52,19 @@ export default function ContactInput() {
                         label="Forename"
                         variant="filled"
                         value={forenameValue}
+                        inputProps={{
+                            maxLength: 20,
+                          }}
                         onChange={(e) => {
                             setForenameValue(e.target.value);
-                            setIsFornameNumValue(!isNaN(+e.target.value));
+                            setIsFornameNumValue(e.target.value.match(validRegEx));
                         }}
-                        error={isForenameNumValue && forenameValue ? true : false}
+                        error={!isForenameNumValue && forenameValue ? true : false}
                         helperText={
-                            isForenameNumValue && forenameValue ? "Input must be string" : ""
+                            !isForenameNumValue && forenameValue ? "Input must be string" : ""
                         }
                         onKeyDown={(e) => {
-                            if (forenameValue && surnameValue && phoneValue && addressValue && e.key === "Enter" && !isForenameNumValue && !isSurnameNumValue && isPhoneNumValue)
+                            if (forenameValue && surnameValue && phoneValue && addressValue && e.key === "Enter" && isForenameNumValue && isSurnameNumValue && isPhoneNumValue)
                                 add_contact()
                         }}
                     />
@@ -67,16 +73,19 @@ export default function ContactInput() {
                         label="Surname"
                         variant="filled"
                         value={surnameValue}
+                        inputProps={{
+                            maxLength: 20,
+                          }}
                         onChange={(e) => {
                             setSurnameValue(e.target.value);
-                            setIsSurnameNumValue(!isNaN(+e.target.value));
+                            setIsSurnameNumValue(e.target.value.match(validRegEx));
                         }}
-                        error={isSurnameNumValue && surnameValue ? true : false}
+                        error={!isSurnameNumValue && surnameValue ? true : false}
                         helperText={
-                            isSurnameNumValue && surnameValue ? "Input must be string" : ""
+                            !isSurnameNumValue && surnameValue ? "Input must be string" : ""
                         }
                         onKeyDown={(e) => {
-                            if (forenameValue && surnameValue && phoneValue && addressValue && e.key === "Enter" && !isForenameNumValue && !isSurnameNumValue && isPhoneNumValue)
+                            if (forenameValue && surnameValue && phoneValue && addressValue && e.key === "Enter" && isForenameNumValue && isSurnameNumValue && isPhoneNumValue)
                                 add_contact()
                         }}
                     />
@@ -85,6 +94,9 @@ export default function ContactInput() {
                         label="Phone Number"
                         variant="filled"
                         value={phoneValue}
+                        inputProps={{
+                            maxLength: 11,
+                          }}
                         onChange={(e) => {
                             setPhoneValue(e.target.value);
                             setisPhoneNumValue(!isNaN(+e.target.value));;
@@ -94,7 +106,7 @@ export default function ContactInput() {
                             !isPhoneNumValue && phoneValue ? "Input must be numeric" : ""
                         }
                         onKeyDown={(e) => {
-                            if (forenameValue && surnameValue && phoneValue && addressValue && e.key === "Enter" && !isForenameNumValue && !isSurnameNumValue && isPhoneNumValue)
+                            if (forenameValue && surnameValue && phoneValue && addressValue && e.key === "Enter" && isForenameNumValue && isSurnameNumValue && isPhoneNumValue)
                                 add_contact()
                         }}
                     />
@@ -103,9 +115,12 @@ export default function ContactInput() {
                         label="Address"
                         variant="filled"
                         value={addressValue}
+                        inputProps={{
+                            maxLength: 50,
+                          }}
                         onChange={(e) => setAddressValue(e.target.value)}
                         onKeyDown={(e) => {
-                            if (forenameValue && surnameValue && phoneValue && addressValue && e.key === "Enter" && !isForenameNumValue && !isSurnameNumValue && isPhoneNumValue)
+                            if (forenameValue && surnameValue && phoneValue && addressValue && e.key === "Enter" && isForenameNumValue && isSurnameNumValue && isPhoneNumValue)
                                 add_contact()
                         }}
                     />
@@ -116,7 +131,7 @@ export default function ContactInput() {
                     <Button
                     variant="contained"
                     onClick={() => add_contact()}
-                    disabled={forenameValue && surnameValue && phoneValue && addressValue && !isForenameNumValue && !isSurnameNumValue && isPhoneNumValue ? false : true}
+                    disabled={forenameValue && surnameValue && phoneValue && addressValue && isForenameNumValue && isSurnameNumValue && isPhoneNumValue ? false : true}
                     >Add Contact</Button>
                 </Stack>
             </div>
