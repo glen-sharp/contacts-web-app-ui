@@ -40,7 +40,7 @@ export default function ContactsTable({ contacts, fetchContacts }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {contacts && contacts.map((val, key) => (
+                        {contacts.contact_array && contacts.contact_array.map((val, key) => (
                             <TableRow key={key}>
                                 <TableCell style={{backgroundColor: '#f2f2f2', width: '5%'}} align="left">{val.id}</TableCell>
                                 <TableCell style={{backgroundColor: '#f2f2f2', width: '35%'}} align="left">{val.forename}&nbsp;{val.surname}</TableCell>
