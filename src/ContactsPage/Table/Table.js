@@ -34,9 +34,9 @@ export default function ContactsTable({ contacts, fetchContacts }) {
                     <TableHead>
                         <TableRow>
                             {columns.map((column)=>(
-                                <TableCell style={{backgroundColor: '#c6c6c6'}} key={column.id}>{column.name}</TableCell>
+                                <TableCell style={{backgroundColor: '#8cbaf5'}} key={column.id}>{column.name}</TableCell>
                             ))}
-                            <TableCell style={{backgroundColor: '#c6c6c6'}}></TableCell>
+                            <TableCell style={{backgroundColor: '#8cbaf5'}}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
